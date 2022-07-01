@@ -13,13 +13,15 @@ public abstract class Customer {
     private String address;
     private String phone;
     private String email;
+    private String typeCustomer;
 
     // Constructor
-    public Customer(long id, String address, String phone, String email) {
+    public Customer(long id, String address, String phone, String email, String typeCustomer) {
         this.id = id;
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.typeCustomer = typeCustomer;
     }
     
     // Getters
@@ -40,6 +42,10 @@ public abstract class Customer {
         return email;
     }
 
+    public String getTypeCustomer() {
+        return typeCustomer;
+    }
+    
     // Setters
     // *****************************
     public void setId(long id) {
@@ -57,8 +63,14 @@ public abstract class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    public void setTypeCustomer(String typeCustomer) {
+        this.typeCustomer = typeCustomer;
+    }
+        
     public abstract String getDescription();
+    public abstract String [] getSpecifications();
+    public abstract void setSpecifications(String [] specifications);
     
     
 }

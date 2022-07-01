@@ -131,6 +131,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListCustomers = new javax.swing.JList<>();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -296,9 +297,9 @@ public class JFrameMain extends javax.swing.JFrame {
         jLblIDCus.setBounds(120, 10, 70, 30);
 
         jLabel8.setFont(new java.awt.Font("Chilanka", 1, 18)); // NOI18N
-        jLabel8.setText("Dirección");
+        jLabel8.setText("Lista de Clientes");
         jPanel2.add(jLabel8);
-        jLabel8.setBounds(10, 40, 100, 30);
+        jLabel8.setBounds(510, 10, 170, 30);
 
         jLabel9.setFont(new java.awt.Font("Chilanka", 1, 18)); // NOI18N
         jLabel9.setText("Persona");
@@ -521,10 +522,20 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabel19.setBounds(10, 10, 70, 30);
 
         jListCustomers.setFont(new java.awt.Font("Chilanka", 1, 18)); // NOI18N
+        jListCustomers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListCustomersMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListCustomers);
 
         jPanel2.add(jScrollPane2);
         jScrollPane2.setBounds(510, 40, 320, 270);
+
+        jLabel20.setFont(new java.awt.Font("Chilanka", 1, 18)); // NOI18N
+        jLabel20.setText("Dirección");
+        jPanel2.add(jLabel20);
+        jLabel20.setBounds(10, 40, 100, 30);
 
         jTabbedPane1.addTab("Clientes", jPanel2);
 
@@ -610,6 +621,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jLblIDCus.setText(idCustomer + "");
         jCmbType.setSelectedIndex(0);
         this.customerType = false;
+        jCmbType.setEnabled(true); // Cuando se edita, se pone false. Aquí se restablece a true.
     }
     
     // Método para convertir un String a Dealer
@@ -637,16 +649,17 @@ public class JFrameMain extends javax.swing.JFrame {
         this.clearForm();
     }//GEN-LAST:event_jBtnClearActionPerformed
 
-    // Seleccionar un Producto
+    // Método para Seleccionar un Producto
     private void jListProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProductsMouseClicked
-        if(jListProducts.getSelectedIndex() > -1){
+        if(jListProducts.getSelectedIndex() > -1){ // -1 es cuando no se selecciona ningún elemento
             Product product = this.products.get(jListProducts.getSelectedIndex());
             jTxtName.setText(product.getName());
             jLblID.setText(product.getId() + "");
             jCmbDistributor.setSelectedItem(product.getDealer().toString());
         }
     }//GEN-LAST:event_jListProductsMouseClicked
-
+    
+    // Método para Editar un pedido
     private void jBtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditActionPerformed
         if(jTxtName.getText().trim().length() != 0){
             for (Product prod: this.products) {
@@ -730,15 +743,58 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jTxtDocumentActionPerformed
 
     private void jBtnClearCusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClearCusActionPerformed
-        // TODO add your handling code here:
+        this.clearCustomerForm();
     }//GEN-LAST:event_jBtnClearCusActionPerformed
-
+    
+    // Método para Eliminar un Cliente
     private void jBtnDelCusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDelCusActionPerformed
-        // TODO add your handling code here:
+        Customer cusSelected = null;
+        for (Customer cus: this.customers) {
+            if(cus.getId() == Long.parseLong(jLblIDCus.getText().toString())){
+                cusSelected = cus;
+            }
+        }
+        if(cusSelected != null)
+            this.customers.remove(cusSelected);
+
+        // Actualizar el listado de Productos
+        this.updateCustomerList();
     }//GEN-LAST:event_jBtnDelCusActionPerformed
 
+    // Método para editar un Cliente
     private void jBtnEditCusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditCusActionPerformed
-        // TODO add your handling code here:
+        if(this.isCorrectCustomerForm()){
+            for (Customer cus: this.customers) {
+                if(cus.getId() == Long.parseLong(jLblIDCus.getText().toString())){
+                    cus.setAddress(jTxtAddress.getText());
+                    cus.setPhone(jTxtPhone.getText());
+                    cus.setEmail(jTxtEmail.getText());
+                    cus.setTypeCustomer(jCmbType.getSelectedItem().toString());
+                    String [] specifications;
+                    System.out.println(this.customerType);
+                    if(!this.customerType){ // Persona
+                      specifications = new String [5];  
+                      specifications[0] = jTxtDocument.getText();
+                      specifications[1] = jTxtFName.getText();
+                      specifications[2] = jTxtSName.getText();
+                      specifications[3] = jTxtFSurname.getText();
+                      specifications[4] = jTxtSSurname.getText();
+                    }
+                    else{ // Compañia
+                      specifications = new String [2];   
+                      specifications[0] = jTxtRegName.getText();
+                      specifications[1] = jTxtNit.getText();
+                    }
+                    cus.setSpecifications(specifications);
+                }
+            }
+
+            // Actualizar el listado de Clientes
+            this.updateCustomerList();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No haz diligenciado el formulario completo para editar un Cliente");
+        }
     }//GEN-LAST:event_jBtnEditCusActionPerformed
 
     // Método para agregar Clientes
@@ -752,7 +808,8 @@ public class JFrameMain extends javax.swing.JFrame {
                                         idCustomer,
                                         jTxtAddress.getText(),
                                         jTxtPhone.getText(),
-                                        jTxtEmail.getText()
+                                        jTxtEmail.getText(),
+                                        jCmbType.getSelectedItem().toString()
                                        );
             }
             else{ // Person
@@ -765,7 +822,8 @@ public class JFrameMain extends javax.swing.JFrame {
                                         idCustomer,
                                         jTxtAddress.getText(),
                                         jTxtPhone.getText(),
-                                        jTxtEmail.getText()
+                                        jTxtEmail.getText(),
+                                        jCmbType.getSelectedItem().toString()
                                       );
             }
             this.customers.add(customer);
@@ -832,6 +890,33 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jTxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTxtEmailActionPerformed
+    
+    // Método para seleccionar un Cliente
+    private void jListCustomersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListCustomersMouseClicked
+        if(jListCustomers.getSelectedIndex() > -1){ // -1 es cuando no se selecciona ningún elemento
+            Customer customer = this.customers.get(jListCustomers.getSelectedIndex());
+            jLblIDCus.setText(customer.getId() + "");
+            jTxtAddress.setText(customer.getAddress());
+            jTxtPhone.setText(customer.getPhone());
+            jTxtEmail.setText(customer.getEmail());
+            jCmbType.setSelectedItem(customer.getTypeCustomer());
+            if(customer.getTypeCustomer() == "Natural"){
+                jTxtDocument.setText(customer.getSpecifications()[0]);
+                jTxtFName.setText(customer.getSpecifications()[1]);
+                jTxtSName.setText(customer.getSpecifications()[2]);
+                jTxtFSurname.setText(customer.getSpecifications()[3]);
+                jTxtSSurname.setText(customer.getSpecifications()[4]);
+                this.customerType = false;
+            }
+            else{
+                jTxtRegName.setText(customer.getSpecifications()[0]);
+                jTxtNit.setText(customer.getSpecifications()[1]);
+                this.customerType = true;
+            }
+            jCmbType.setEnabled(false); // No se puede modificar el tipo de Cliente
+            
+        }
+    }//GEN-LAST:event_jListCustomersMouseClicked
 
     /**
      * @param args the command line arguments
@@ -891,6 +976,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

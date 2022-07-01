@@ -16,8 +16,8 @@ public class Company extends Customer {
     
     // Constructor
 
-    public Company(String registeredName, String nit, long id, String address, String phone, String email) {
-        super(id, address, phone, email);
+    public Company(String registeredName, String nit, long id, String address, String phone, String email, String typeCustomer) {
+        super(id, address, phone, email, typeCustomer);
         this.registeredName = registeredName;
         this.nit = nit;
     }
@@ -45,6 +45,20 @@ public class Company extends Customer {
     @Override
     public String getDescription(){
         return this.getId() + ": Empresa " + this.getRegisteredName();
+    }
+    
+    @Override
+    public String [] getSpecifications(){
+        String [] specifications = new String [2];
+        specifications[0] = this.getRegisteredName();
+        specifications[1] = this.getNit();
+        return specifications;
+    }
+    
+    @Override
+    public void setSpecifications(String [] specifications){
+        this.setRegisteredName(specifications[0]);
+        this.setNit(specifications[1]);
     }
     
     

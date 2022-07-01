@@ -19,8 +19,8 @@ public class Person extends Customer {
 
     // Constructor
 
-    public Person(String document, String firstName, String secondName, String firstSurname, String secondSurname, long id, String address, String phone, String email) {
-        super(id, address, phone, email);
+    public Person(String document, String firstName, String secondName, String firstSurname, String secondSurname, long id, String address, String phone, String email, String typeCustomer) {
+        super(id, address, phone, email, typeCustomer);
         this.document = document;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -75,5 +75,25 @@ public class Person extends Customer {
     @Override
     public String getDescription(){
         return this.getId() + ": " + this.getFirstName() + " " + this.getSecondName() + " " + this.getFirstSurname() + " " + this.getSecondSurname();
+    }
+    
+    @Override
+    public String [] getSpecifications(){
+        String [] specifications = new String [5];
+        specifications[0] = this.getDocument();
+        specifications[1] = this.getFirstName();
+        specifications[2] = this.getSecondName();
+        specifications[3] = this.getFirstSurname();
+        specifications[4] = this.getSecondSurname();
+        return specifications;
+    }
+    
+    @Override
+    public void setSpecifications(String [] specifications){
+        this.setDocument(specifications[0]);
+        this.setFirstName(specifications[1]);
+        this.setSecondName(specifications[2]);
+        this.setFirstSurname(specifications[3]);
+        this.setSecondSurname(specifications[4]);
     }
 }
