@@ -8,7 +8,7 @@ package com.fvh.reto3.controller.classes.abst;
  *
  * @author fercho
  */
-public class Customer {
+public abstract class Customer {
     private long id;
     private String address;
     private String phone;
@@ -57,6 +57,8 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public abstract String getDescription();
     
     
 }

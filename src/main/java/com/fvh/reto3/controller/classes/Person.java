@@ -72,5 +72,8 @@ public class Person extends Customer {
         this.secondSurname = secondSurname;
     }
     
-    
+    @Override
+    public String getDescription(){
+        return this.getId() + ": " + this.getFirstName() + " " + this.getSecondName() + " " + this.getFirstSurname() + " " + this.getSecondSurname();
+    }
 }

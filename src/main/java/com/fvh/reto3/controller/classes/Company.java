@@ -42,6 +42,10 @@ public class Company extends Customer {
         this.nit = nit;
     }
     
+    @Override
+    public String getDescription(){
+        return this.getId() + ": Empresa: " + this.getRegisteredName();
+    }
     
     
 }
