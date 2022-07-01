@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.fvh.reto3.controller.classes;
+package com.fvh.reto3.classes;
 
 import java.util.Date;
 import java.util.ArrayList;
 
-import com.fvh.reto3.controller.classes.abst.Customer;
-import com.fvh.reto3.controller.classes.Payment;
-import com.fvh.reto3.controller.classes.ProductLine;
+import com.fvh.reto3.classes.abst.Customer;
+import com.fvh.reto3.classes.Payment;
+import com.fvh.reto3.classes.ProductLine;
 /**
  *
  * @author fercho

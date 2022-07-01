@@ -6,11 +6,11 @@ package com.fvh.reto3.view;
 
 import java.util.ArrayList;
 
-import com.fvh.reto3.controller.enums.Dealer;
-import com.fvh.reto3.controller.classes.Product;
-import com.fvh.reto3.controller.classes.abst.Customer;
-import com.fvh.reto3.controller.classes.Person;
-import com.fvh.reto3.controller.classes.Company;
+import com.fvh.reto3.classes.enums.Dealer;
+import com.fvh.reto3.classes.Product;
+import com.fvh.reto3.classes.abst.Customer;
+import com.fvh.reto3.classes.Person;
+import com.fvh.reto3.classes.Company;
 
 import java.awt.Image;
 import javax.swing.DefaultListModel;
